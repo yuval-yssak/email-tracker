@@ -12,3 +12,7 @@ header {
   background-color: #f2fafc;
   padding: 1rem 3rem;
 }
+
+.slot {
+  display: none;
+}
