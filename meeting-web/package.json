@@ -5,7 +5,7 @@
   "dependencies": {},
   "scripts": {
     "start": "parcel serve ./index.html",
-    "build": "parcel build ./index.html"
+    "build": "parcel build ./index.html && cp _redirects dist/"
   },
   "devDependencies": {
     "parcel": "^2.0.0-beta.2"
