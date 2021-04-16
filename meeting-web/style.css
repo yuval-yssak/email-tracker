@@ -1,3 +1,14 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: inherit;
+}
+
 body {
-  background-color: antiquewhite;
+  box-sizing: border-box;
+}
+
+header {
+  background-color: #f2fafc;
+  padding: 1rem 3rem;
 }
