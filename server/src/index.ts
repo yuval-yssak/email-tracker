@@ -43,7 +43,9 @@ app.get("/:id/small-image.png", (req, res) => {
 });
 
 app.post("/:email/interested", async (req, res) => {
-  const email = Buffer.from(req.params.email, "base64").toString();
+  const email = decodeURIComponent(
+    Buffer.from(req.params.email, "base64").toString()
+  );
   const newClick = new Click({
     email,
     timestamp: dayjs().format("YYYY-MM-DD HH:mm:ss.SSSZ"),
@@ -56,7 +58,9 @@ app.post("/:email/interested", async (req, res) => {
 });
 
 app.post("/:email/cannot-attend", async (req, res) => {
-  const email = Buffer.from(req.params.email, "base64").toString();
+  const email = decodeURIComponent(
+    Buffer.from(req.params.email, "base64").toString()
+  );
   const newClick = new Click({
     email,
     timestamp: dayjs().format("YYYY-MM-DD HH:mm:ss.SSSZ"),
@@ -71,7 +75,9 @@ app.post("/:email/cannot-attend", async (req, res) => {
 const jsonParser = express.json();
 
 app.post("/:email/feedback", jsonParser, async (req, res) => {
-  const email = Buffer.from(req.params.email, "base64").toString();
+  const email = decodeURIComponent(
+    Buffer.from(req.params.email, "base64").toString()
+  );
   const newClick = new Feedback({
     email,
     timestamp: dayjs().format("YYYY-MM-DD HH:mm:ss.SSSZ"),
