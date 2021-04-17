@@ -24,7 +24,7 @@ mongoose.connect(mongoDBUrl, {
 
 const clickSchema = new mongoose.Schema({
   email: String,
-  timestamp: Date,
+  timestamp: String,
   link: String,
 });
 
@@ -32,7 +32,7 @@ const Click = mongoose.model("Click", clickSchema);
 
 const feedbackSchema = new mongoose.Schema({
   email: String,
-  timestemp: Date,
+  timestamp: String,
   feedback: String,
 });
 const Feedback = mongoose.model("Feedback", feedbackSchema);
