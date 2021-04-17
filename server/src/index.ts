@@ -35,7 +35,7 @@ app.get("/:id/small-image.png", (req, res) => {
 });
 
 app.post("/:email/interested", async (req, res) => {
-  const email = req.params.email;
+  const email = Buffer.from(req.params.email, "base64").toString();
   const newClick = new Click({
     email,
     timestamp: Date.now(),
@@ -48,7 +48,7 @@ app.post("/:email/interested", async (req, res) => {
 });
 
 app.post("/:email/cannot-attend", async (req, res) => {
-  const email = req.params.email;
+  const email = Buffer.from(req.params.email, "base64").toString();
   const newClick = new Click({
     email,
     timestamp: Date.now(),
@@ -63,7 +63,7 @@ app.post("/:email/cannot-attend", async (req, res) => {
 const jsonParser = express.json();
 
 app.post("/:email/feedback", jsonParser, async (req, res) => {
-  const email = req.params.email;
+  const email = Buffer.from(req.params.email, "base64").toString();
   const newClick = new Feedback({
     email,
     timestamp: Date.now(),
