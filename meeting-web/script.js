@@ -1,13 +1,15 @@
 // @ts-check
 document.addEventListener("DOMContentLoaded", loadMain);
 
+const serverBaseUrl = `https://ashram-town-hall-meeting-track.herokuapp.com`;
+
 function loadMain() {
   const main = document.getElementById("main");
   const { pathname } = new URL(window.location.href);
 
   if (pathname.match(/interested$/)) {
     fetch(
-      `http://localhost:3030/${pathname
+      `${serverBaseUrl}/${pathname
         .replace(/\/interested$/, "")
         .slice(1)}/interested`,
       { method: "POST" }
@@ -19,7 +21,7 @@ function loadMain() {
     if (slot) slot.style.display = "block";
   } else if (pathname.match(/cannot-attend$/)) {
     fetch(
-      `http://localhost:3030/${pathname
+      `${serverBaseUrl}/${pathname
         .replace(/\/cannot-attend$/, "")
         .slice(1)}/cannot-attend`,
       { method: "POST" }
@@ -39,7 +41,7 @@ function loadMain() {
    */
   function submitResponse(e) {
     fetch(
-      `http://localhost:3030/${pathname
+      `${serverBaseUrl}/${pathname
         .replace(/\/cannot-attend$/, "")
         .slice(1)}/feedback`,
       {

@@ -1,11 +1,15 @@
 import express from "express";
 import mongoose from "mongoose";
 import cors from "cors";
+require("dotenv").config();
+
+const mongoDBUrl = process.env.MONGO_DB_URL!;
+const port = process.env.PORT || 3030;
 
 const app = express();
 app.use(cors());
 
-mongoose.connect("mongodb://localhost/test", {
+mongoose.connect(mongoDBUrl, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
@@ -75,5 +79,5 @@ const db = mongoose.connection;
 db.on("error", console.error.bind(console, "connection error:"));
 db.once("open", function () {
   // we're connected!
-  app.listen(3030, () => console.log("listening on 3030"));
+  app.listen(port, () => console.log(`listening on ${port}`));
 });
