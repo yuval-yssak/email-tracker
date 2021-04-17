@@ -1,6 +1,14 @@
 import express from "express";
 import mongoose from "mongoose";
 import cors from "cors";
+import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc"; // dependent on utc plugin
+import timezone from "dayjs/plugin/timezone";
+
+dayjs.extend(utc);
+dayjs.extend(timezone);
+dayjs.tz.setDefault("America/Nassau");
+
 require("dotenv").config();
 
 const mongoDBUrl = process.env.MONGO_DB_URL!;
@@ -38,7 +46,7 @@ app.post("/:email/interested", async (req, res) => {
   const email = Buffer.from(req.params.email, "base64").toString();
   const newClick = new Click({
     email,
-    timestamp: new Date(),
+    timestamp: dayjs().format("YYYY-MM-DD HH:mm:ss.SSSZ"),
     link: "interested",
   });
 
@@ -51,7 +59,7 @@ app.post("/:email/cannot-attend", async (req, res) => {
   const email = Buffer.from(req.params.email, "base64").toString();
   const newClick = new Click({
     email,
-    timestamp: new Date(),
+    timestamp: dayjs().format("YYYY-MM-DD HH:mm:ss.SSSZ"),
     link: "cannot-attend",
   });
 
@@ -66,7 +74,7 @@ app.post("/:email/feedback", jsonParser, async (req, res) => {
   const email = Buffer.from(req.params.email, "base64").toString();
   const newClick = new Feedback({
     email,
-    timestamp: new Date(),
+    timestamp: dayjs().format("YYYY-MM-DD HH:mm:ss.SSSZ"),
     feedback: req.body.feedback,
   });
 
