@@ -26,6 +26,7 @@ const clickSchema = new mongoose.Schema({
   email: String,
   timestamp: String,
   link: String,
+  userAgent: String,
 });
 
 const Click = mongoose.model("Click", clickSchema);
@@ -50,6 +51,7 @@ app.post("/:email/interested", async (req, res) => {
     email,
     timestamp: dayjs().format("YYYY-MM-DD HH:mm:ss.SSSZ"),
     link: "interested",
+    userAgent: req.get("user-agent"),
   });
 
   await newClick.save();
@@ -65,6 +67,7 @@ app.post("/:email/cannot-attend", async (req, res) => {
     email,
     timestamp: dayjs().format("YYYY-MM-DD HH:mm:ss.SSSZ"),
     link: "cannot-attend",
+    userAgent: req.get("user-agent"),
   });
 
   await newClick.save();
