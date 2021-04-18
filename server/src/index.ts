@@ -1,100 +1,100 @@
-import express from "express";
-import mongoose from "mongoose";
-import cors from "cors";
-import dayjs from "dayjs";
-import utc from "dayjs/plugin/utc"; // dependent on utc plugin
-import timezone from "dayjs/plugin/timezone";
+import express from 'express'
+import mongoose from 'mongoose'
+import cors from 'cors'
+import dayjs from 'dayjs'
+import utc from 'dayjs/plugin/utc' // dependent on utc plugin
+import timezone from 'dayjs/plugin/timezone'
 
-dayjs.extend(utc);
-dayjs.extend(timezone);
-dayjs.tz.setDefault("America/Nassau");
+dayjs.extend(utc)
+dayjs.extend(timezone)
+dayjs.tz.setDefault('America/Nassau')
 
-require("dotenv").config();
+require('dotenv').config()
 
-const mongoDBUrl = process.env.MONGO_DB_URL!;
-const port = process.env.PORT || 3030;
+const mongoDBUrl = process.env.MONGO_DB_URL!
+const port = process.env.PORT || 3030
 
-const app = express();
-app.use(cors());
+const app = express()
+app.use(cors())
 
 mongoose.connect(mongoDBUrl, {
   useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
+  useUnifiedTopology: true
+})
 
 const clickSchema = new mongoose.Schema({
   email: String,
   timestamp: String,
   link: String,
-  userAgent: String,
-});
+  userAgent: String
+})
 
-const Click = mongoose.model("Click", clickSchema);
+const Click = mongoose.model('Click', clickSchema)
 
 const feedbackSchema = new mongoose.Schema({
   email: String,
   timestamp: String,
-  feedback: String,
-});
-const Feedback = mongoose.model("Feedback", feedbackSchema);
+  feedback: String
+})
+const Feedback = mongoose.model('Feedback', feedbackSchema)
 
-app.get("/:id/small-image.png", (req, res) => {
-  console.log(req.params.id);
-  res.sendFile("1x1-00ffff7f.png", { root: "assets" });
-});
+app.get('/:id/small-image.png', (req, res) => {
+  console.log(req.params.id)
+  res.sendFile('1x1-00ffff7f.png', { root: 'assets' })
+})
 
-app.post("/:email/interested", async (req, res) => {
+app.post('/:email/interested', async (req, res) => {
   const email = decodeURIComponent(
-    Buffer.from(req.params.email, "base64").toString()
-  );
+    Buffer.from(req.params.email, 'base64').toString()
+  )
   const newClick = new Click({
     email,
-    timestamp: dayjs().format("YYYY-MM-DD HH:mm:ss.SSSZ"),
-    link: "interested",
-    userAgent: req.get("user-agent"),
-  });
+    timestamp: dayjs().format('YYYY-MM-DD HH:mm:ss.SSSZ'),
+    link: 'interested',
+    userAgent: req.get('user-agent')
+  })
 
-  await newClick.save();
+  await newClick.save()
 
-  res.send();
-});
+  res.send()
+})
 
-app.post("/:email/cannot-attend", async (req, res) => {
+app.post('/:email/cannot-attend', async (req, res) => {
   const email = decodeURIComponent(
-    Buffer.from(req.params.email, "base64").toString()
-  );
+    Buffer.from(req.params.email, 'base64').toString()
+  )
   const newClick = new Click({
     email,
-    timestamp: dayjs().format("YYYY-MM-DD HH:mm:ss.SSSZ"),
-    link: "cannot-attend",
-    userAgent: req.get("user-agent"),
-  });
+    timestamp: dayjs().format('YYYY-MM-DD HH:mm:ss.SSSZ'),
+    link: 'cannot-attend',
+    userAgent: req.get('user-agent')
+  })
 
-  await newClick.save();
+  await newClick.save()
 
-  res.send();
-});
+  res.send()
+})
 
-const jsonParser = express.json();
+const jsonParser = express.json()
 
-app.post("/:email/feedback", jsonParser, async (req, res) => {
+app.post('/:email/feedback', jsonParser, async (req, res) => {
   const email = decodeURIComponent(
-    Buffer.from(req.params.email, "base64").toString()
-  );
+    Buffer.from(req.params.email, 'base64').toString()
+  )
   const newClick = new Feedback({
     email,
-    timestamp: dayjs().format("YYYY-MM-DD HH:mm:ss.SSSZ"),
-    feedback: req.body.feedback,
-  });
+    timestamp: dayjs().format('YYYY-MM-DD HH:mm:ss.SSSZ'),
+    feedback: req.body.feedback
+  })
 
-  await newClick.save();
+  await newClick.save()
 
-  res.send();
-});
+  res.send()
+})
 
-const db = mongoose.connection;
-db.on("error", console.error.bind(console, "connection error:"));
-db.once("open", function () {
+const db = mongoose.connection
+db.on('error', console.error.bind(console, 'connection error:'))
+db.once('open', function () {
   // we're connected!
-  app.listen(port, () => console.log(`listening on ${port}`));
-});
+  app.listen(port, () => console.log(`listening on ${port}`))
+})
