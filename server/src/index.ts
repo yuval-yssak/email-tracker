@@ -31,6 +31,14 @@ const clickSchema = new mongoose.Schema({
 
 const Click = mongoose.model('Click', clickSchema)
 
+const openSchema = new mongoose.Schema({
+  email: String,
+  timestamp: String,
+  userAgent: String
+})
+
+const Open = mongoose.model('Open', openSchema)
+
 const feedbackSchema = new mongoose.Schema({
   email: String,
   timestamp: String,
@@ -38,8 +46,17 @@ const feedbackSchema = new mongoose.Schema({
 })
 const Feedback = mongoose.model('Feedback', feedbackSchema)
 
-app.get('/:id/small-image.png', (req, res) => {
-  console.log(req.params.id)
+app.get('/:email/small-image.png', (req, res) => {
+  const email = decodeURIComponent(
+    Buffer.from(req.params.email, 'base64').toString()
+  )
+
+  const newOpen = new Open({
+    email,
+    timestamp: dayjs().format('YYYY-MM-DD HH:mm:ss.SSSZ'),
+    userAgent: req.get('user-agent')
+  })
+  newOpen.save()
   res.sendFile('1x1-00ffff7f.png', { root: 'assets' })
 })
 
