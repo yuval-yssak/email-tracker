@@ -16,6 +16,7 @@ const port = process.env.PORT || 3030
 
 const app = express()
 app.use(cors())
+app.set('trust proxy', true)
 
 mongoose.connect(mongoDBUrl, {
   useNewUrlParser: true,
@@ -34,7 +35,8 @@ const Click = mongoose.model('Click', clickSchema)
 const openSchema = new mongoose.Schema({
   email: String,
   timestamp: String,
-  userAgent: String
+  userAgent: String,
+  ipAddress: String
 })
 
 const Open = mongoose.model('Open', openSchema)
@@ -54,7 +56,8 @@ app.get('/:email/small-image.png', (req, res) => {
   const newOpen = new Open({
     email,
     timestamp: dayjs().format('YYYY-MM-DD HH:mm:ss.SSSZ'),
-    userAgent: req.get('user-agent')
+    userAgent: req.get('user-agent'),
+    ipAddress: req.ip
   })
   newOpen.save()
   res.sendFile('1x1-00ffff7f.png', { root: 'assets' })
